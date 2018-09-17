@@ -1,0 +1,196 @@
+package infinity.game;
+
+import java.util.Scanner;
+
+
+public class InfinityGame {
+
+    public static char[] tablero;
+    public static int[][] jugadores;
+    public static boolean aleatoriedad= true;
+    
+    public static void main(String[] args) {
+        menu();
+        
+        
+    }
+
+    private static void menu(){
+        
+        System.out.println("Bienvenido a Infinity Game. Elija una opcion");
+        System.out.println("1) Definir numero de jugadores");
+        System.out.println("2) Definir tamaño de tablero");
+        System.out.println("3) Jugar");
+        System.out.println("4) Salir");
+        
+        
+        seleccion(leer());
+    }
+    
+    public static void seleccion(int seleccion){
+        
+        switch(seleccion){
+            case 1:
+                System.out.println("Digite el numero de jugadores");
+                mostrarJugadores(generarJugadores(leer())); 
+                menu();
+                break;
+            case 2:
+                System.out.println("Digite el numero de casillas para el tablero. El minimo son 20");
+                int numeroCasillas = leer();
+                if(numeroCasillas < 20){
+                    System.out.println("Error al crear tablero. Numero de casillas demasiado pequeño");
+                }else{mostrarTablero(generarTablero(numeroCasillas)); }
+                menu();
+                break;
+            case 3:
+                System.out.println("Aun no es posible jugar");
+                menu();
+                break;
+            case 4:
+                break;
+        }       
+        
+        
+    }
+    
+    public static int leer(){
+        Scanner respuesta = new Scanner(System.in);
+        int numeroRespuesta = respuesta.nextInt();
+        return numeroRespuesta;
+    }
+    //No se especifica una vida base, asi que se puso por defecto 50 puntos de vida
+    private static int[][] generarJugadores(int numeroJugadores){
+        InfinityGame.jugadores = new  int[numeroJugadores][3];    
+        for(int i=0; i<InfinityGame.jugadores.length;i++){
+          InfinityGame.jugadores[i][0]= i+1;
+          InfinityGame.jugadores[i][1]= 50;
+          InfinityGame.jugadores[i][2] = 1;
+        }
+        return InfinityGame.jugadores;
+    }
+    
+    public static void mostrarJugadores(int[][] arg){
+        for(int i=0; i<arg.length;i++){
+            System.out.println("Jugador "+ (i+1));
+            System.out.println("Puntos de vida: "+InfinityGame.jugadores[i][1]);
+            System.out.println("Posicion: "+InfinityGame.jugadores[i][2]);
+        }
+    }
+    
+    private static int lanzarDados(){
+        int valorDado1 = (int) Math.floor(Math.random()*6+1);
+        int valorDado2 = (int) Math.floor(Math.random()*6+1);
+        return (valorDado1+valorDado2);
+    }
+    public static void mostrarDados(){
+        System.out.println("El valor de los dados es "+lanzarDados());
+    }
+    
+    private static void calcularAleatoriedad(){
+        int valorRandom = (int) Math.floor(Math.random()*2);
+        
+        
+        if(valorRandom == 0){
+           InfinityGame.aleatoriedad = false;
+        }else{InfinityGame.aleatoriedad = true;}
+        
+        mostrarAleatoriedad();
+        
+    }
+    
+    public static void mostrarAleatoriedad(){
+        
+        if(InfinityGame.aleatoriedad == true){
+            System.out.println("Ha salido Cara");
+        }
+        else{ System.out.println("Ha salido Cruz");}
+    }
+   
+
+    private static char[] generarTablero(int casillas){
+        char casillaPartida ='i';
+        char casillaBlanco = 'b';
+        char casillaPortal = 'p';
+        char casillaSalud = 's';
+        char casillaDesafio = 'd';
+        char casillaFinal = 'f';
+        char[] tablero = new char[casillas];
+        char[] variables = {casillaBlanco, casillaPortal, casillaSalud, casillaDesafio};
+        tablero[0] = casillaPartida;
+        tablero[(int) Math.floor(Math.random())*(tablero.length-1)+1] = casillaPortal;
+        tablero[casillas-1] = casillaFinal;
+        for(int i=1;i<tablero.length-1;i++){
+            int valorCasilla = (int) Math.floor(Math.random()*4);
+            tablero[i] = variables[valorCasilla];
+        }
+        InfinityGame.tablero = tablero;
+        return tablero;
+    }
+    
+    public static void mostrarTablero(char[] arrg){
+        for(int i=0; i<arrg.length;i++){
+            System.out.println("Cassila numero "+(i+1)+" : "+arrg[i]);
+        }
+    }
+    private static void casillaDesafio(int indiceJugador, int[][] arg){
+        for(int i=0;i<arg.length;i++){
+            if(arg[i][0] != indiceJugador ){
+                System.out.println("Para el jugador "+(i+1));
+                calcularAleatoriedad();
+               if(InfinityGame.aleatoriedad == true){
+                   System.out.println("Si sale cara será un desafio de avanzar o retroceder espacios");
+                    calcularAleatoriedad();
+                    if(InfinityGame.aleatoriedad == true){
+                    InfinityGame.jugadores[indiceJugador][2] += Math.floor((Math.random()*6+1));
+                    }else {
+                    InfinityGame.jugadores[indiceJugador][2] -= Math.floor((Math.random()*6+1));
+        }
+               }else{ System.out.println("Si sale cruz será un desafio de ganar o perder salud");
+                   casillaSalud(i);
+               }
+            }
+        }
+    }
+ 
+    private static int casillaPortal(char[] arrg,int indiceCasilla, int indiceJugador){
+        boolean bandera= true;
+        
+        
+        while(bandera){
+            int contador = (int) Math.floor(Math.random()*arrg.length);
+            if((arrg[contador] == 'p')&&(contador != indiceCasilla)){
+                indiceCasilla = contador;
+                bandera = false;
+                InfinityGame.jugadores[indiceJugador][2]= contador;
+                System.out.println(contador);
+            }
+        }
+        return InfinityGame.jugadores[indiceJugador][2];
+    }
+    
+    public static void mostrarPortal(int indiceCasilla){
+        System.out.println("El jugador ha usado un portal que lo llevo a la casilla "+" "+(indiceCasilla));
+    }
+ 
+    private static int casillaSalud(int indiceJugador){
+        calcularAleatoriedad();
+        
+        if(InfinityGame.aleatoriedad == true){
+            InfinityGame.jugadores[indiceJugador][1] += Math.floor((Math.random()*4)+1);
+        }else {
+            InfinityGame.jugadores[indiceJugador][1] -= Math.floor((Math.random()*4)+1);
+        }
+        
+        return InfinityGame.jugadores[indiceJugador][1];
+    }
+    
+    public static void mostrarSalud(int puntosVida){
+       if(InfinityGame.aleatoriedad == true){
+            System.out.println("El jugador ha ganado puntos de vida");
+        }
+        else{ System.out.println("El jugador ha perdido puntos de vida");} 
+    }
+
+    
+}
