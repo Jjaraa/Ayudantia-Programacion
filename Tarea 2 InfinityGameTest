@@ -1,0 +1,166 @@
+import infinity.game.InfinityGame;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ * @author Jonathan
+ */
+public class InfinityGameTest {
+    InfinityGame juego = new InfinityGame();
+    
+    public InfinityGameTest() {
+    }
+    
+    
+    
+    @Test
+    public void lanzarDadosTest(){
+        int contador = 0;
+        int validador = 0;
+        while(contador < 100){
+            int numeroDados = juego.lanzarDados();
+            if((numeroDados>0)&&(numeroDados<13)){
+                validador++;
+            }
+            contador++;
+        }  
+        assertEquals(100, validador);
+    }
+    
+    @Test
+    public void casillaSaludTest1(){
+        System.out.println("Test1 casillaSalud:");
+        System.out.println(" ");
+        int[][] jugadores = juego.generarJugadores(3);
+        jugadores[2][1] = 2;
+        int antes = jugadores[2][1];
+        juego.mostrarJugadores(jugadores);
+        juego.casillaSalud(2, jugadores);
+        int despues = jugadores[2][1];
+        System.out.println(" ");
+        System.out.println("Luego del cambio");
+        System.out.println(" ");        
+        juego.mostrarJugadores(jugadores);
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        int validador = Math.abs(antes-despues);
+        System.out.println("validador: "+validador);
+         assertTrue((validador<4)&&(validador>0));
+        
+    }
+    
+    @Test
+    public void casillaSaludTest2(){
+        System.out.println("Test2 casillaSalud:");
+        System.out.println(" ");
+        int[][] jugadores = juego.generarJugadores(3);
+        jugadores[1][1] = 1;
+        int antes = jugadores[1][1];
+        juego.mostrarJugadores(jugadores);
+        juego.casillaSalud(1, jugadores);
+        int despues = jugadores[1][1];
+        System.out.println(" ");
+        System.out.println("Luego del cambio");
+        System.out.println(" ");        
+        juego.mostrarJugadores(jugadores);
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        int validador = Math.abs(antes-despues);
+        assertTrue((validador<4)&&(validador>0));
+    }
+    
+    @Test
+    public void casillaSaludTest3(){
+        System.out.println("Test3 casillaSalud");
+        System.out.println(" ");
+        int[][] jugadores = juego.generarJugadores(5);
+        jugadores[4][1] = 3;
+        int antes = jugadores[4][1];
+        juego.mostrarJugadores(jugadores);
+        juego.casillaSalud(4, jugadores);
+        int despues = jugadores[4][1];
+        System.out.println(" ");
+        System.out.println("Luego del cambio");
+        System.out.println(" ");        
+        juego.mostrarJugadores(jugadores);
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        int validador = Math.abs(antes-despues);
+        assertTrue((validador<4)&&(validador>0));
+    }
+    
+    @Test
+    public void casillaSaludTest4() {
+        System.out.println("Test4 casillaSalud");
+        int[][] jugadores = juego.generarJugadores(1);
+        jugadores[0][1] = 10;
+        int antes = jugadores[0][1];
+        juego.mostrarJugadores(jugadores);
+        juego.casillaSalud(0, jugadores);
+        int despues = jugadores[0][1];
+        System.out.println(" ");
+        System.out.println("Luego del cambio");
+        System.out.println(" ");        
+        juego.mostrarJugadores(jugadores);
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        int validador = Math.abs(antes-despues);
+        assertTrue((validador<4)&&(validador>0));
+    }
+    
+    @Test
+    public void casillaSaludTest5(){
+        System.out.println("Test5 casillaSalud");
+        System.out.println(" ");
+        int[][] jugadores = juego.generarJugadores(3);
+        jugadores[2][1] = 3;
+        int antes = jugadores[2][1];
+        juego.mostrarJugadores(jugadores);
+        juego.casillaSalud(2, jugadores);
+        int despues = jugadores[2][1];
+        System.out.println(" ");
+        System.out.println("Luego del cambio");
+        System.out.println(" ");        
+        juego.mostrarJugadores(jugadores);
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        int validador = Math.abs(antes-despues);
+        assertTrue((validador<4)&&(validador>0));
+        
+    }
+    
+    @Test
+    public void casillaPortalTest(){
+        int contador = 0;
+        int validador = 0; 
+        int random = (int)Math.floor(Math.random()*80+20);
+        while(contador < 100){
+            char[] tablero = juego.generarTablero(random);
+            int[][] jugadores = juego.generarJugadores(5);
+    // como el posicion 1 del tablero siempre será una casilla portal, se usará 
+    // esa casilla como punto de partida (el valor 2, para la posicion de los jugadores)
+            jugadores[1][2] = 2;
+            int casilla = juego.casillaPortal(tablero,jugadores, 1, 3);
+            char portal = tablero[casilla-1];
+            if(portal == 'p'){
+                validador++;
+            }
+            contador++;
+        }
+        assertEquals(100,validador );
+    }
+    
+    
+
+
+}
