@@ -147,7 +147,7 @@ public class InfinityGameTest {
         while(contador < 100){
             char[] tablero = juego.generarTablero(random);
             int[][] jugadores = juego.generarJugadores(5);
-    // como el posicion 1 del tablero siempre será una casilla portal, se usará 
+    // como la posicion 1 del tablero siempre será una casilla portal, se usará 
     // esa casilla como punto de partida (el valor 2, para la posicion de los jugadores)
             jugadores[1][2] = 2;
             int casilla = juego.casillaPortal(tablero,jugadores, 1, 3);
