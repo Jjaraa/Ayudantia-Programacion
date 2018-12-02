@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build">
+	<path id="build.classpath">
+		<pathelement location="classes"/>
+	</path>
+	<target name="init">
+		<mkdir dir="classes"/>
+	</target>
+	<target name="clean">
+		<delete dir="classes"/>
+	</target>
+	<target depends="init" name="build">
+		<javac srcdir="." destdir="classes" source="1.5" target="1.5" fork="yes">
+			<classpath refid="build.classpath"/>
+			<include name="game/Tablero.java"/>
+			<include name="game/Podio.java"/>
+			<include name="game/Juego.java"/>
+			<include name="game/Dado.java"/>
+			<include name="game/Jugador.java"/>
+			<include name="game/Casilla.java"/>
+			<include name="game/Lector.java"/>
+			<include name="game/Main.java"/>
+			<include name="game/Moneda.java"/>
+			<include name="game/Reliquia.java"/>
+			<include name="game/Guardian.java"/>
+		</javac>
+	</target>
+</project>
